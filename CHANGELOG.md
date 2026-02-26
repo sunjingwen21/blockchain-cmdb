@@ -7,20 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Project initialization with directory structure
-- README.md with architecture documentation
-- This CHANGELOG.md
-- .gitignore for Go and Node.js
+### Added (Day 1 - 2026-02-26)
+- ✅ Backend API foundation with Go + Gin framework
+  - RESTful API structure with versioning (/api/v1)
+  - Health check endpoint
+  - Configuration management (environment-based)
+  - User CRUD operations (List, Get, Create, Update, Delete)
+  - Asset CRUD operations with history tracking
+- ✅ Frontend React + TypeScript project structure
+  - Type definitions for User and Asset
+  - API service layer with Axios
+  - Unit test structure with Jest
+- ✅ Database Models (base structure)
+  - User model with validation
+  - Asset model with status tracking and history
+- ✅ Unit Tests
+  - Handler tests for API endpoints
+  - Model validation tests
+  - Config loading tests
+- ✅ Git repository setup with SSH key authentication
 
-### Planned
-- [ ] Backend API foundation (Gin + GORM)
-- [ ] User authentication system (JWT)
-- [ ] PostgreSQL database schema
-- [ ] Frontend React setup with TypeScript
-- [ ] Blockchain integration module
-- [ ] Docker deployment configuration
-- [ ] CI/CD pipeline setup
+### Planned (Day 2)
+- [ ] PostgreSQL database integration (GORM)
+- [ ] JWT authentication middleware
+- [ ] Blockchain connection module (Ethereum)
+- [ ] Frontend UI components (Ant Design)
+- [ ] Asset dashboard page
+- [ ] Docker Compose setup
+
+### Planned (Future)
+- [ ] Blockchain asset registration/on-chain storage
+- [ ] Asset transfer history on blockchain
+- [ ] Frontend asset management interface
+- [ ] Real-time asset monitoring
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] API documentation (Swagger/OpenAPI)
 
 ## Technical Decisions
 
