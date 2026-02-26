@@ -1,103 +1,76 @@
-# Blockchain CMDB Platform
+# Blockchain CMDB
 
-A production-grade Configuration Management Database (CMDB) platform with blockchain integration for immutable audit trails.
+基于区块链技术的配置管理数据库（Configuration Management Database）平台。
 
-## 🏗️ Architecture
+## 🏗️ 架构
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Frontend (React + TS)                   │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │  Dashboard  │  │  Asset Mgmt │  │   Blockchain View   │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Backend API (Go + Gin)                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │  REST API   │  │  Auth/JWT   │  │  Business Logic     │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              ▼               ▼               ▼
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│   PostgreSQL    │  │     Redis       │  │   Blockchain    │
-│   (Primary DB)  │  │   (Cache/Queue) │  │   (Audit Log)   │
-└─────────────────┘  └─────────────────┘  └─────────────────┘
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   React Frontend │────▶│   Go Backend API │────▶│   PostgreSQL    │
+│   (TypeScript)   │     │   (Gin + GORM)   │     │   (主数据库)      │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+                               │
+                               ▼
+                        ┌──────────────────┐
+                        │   Blockchain     │
+                        │   (Ethereum)     │
+                        └──────────────────┘
 ```
 
-## 🚀 Tech Stack
+## 🚀 技术栈
 
-### Backend
-- **Language**: Go 1.21+
-- **Framework**: Gin
-- **Database**: PostgreSQL 15
-- **Cache**: Redis 7
-- **Blockchain**: Ethereum/Polygon SDK
-- **Authentication**: JWT + bcrypt
+- **后端**: Go + Gin + GORM
+- **前端**: React 18 + TypeScript + Ant Design
+- **区块链**: Ethereum (ethers.js)
+- **数据库**: PostgreSQL + Redis
+- **部署**: Docker + Docker Compose
 
-### Frontend
-- **Framework**: React 18
-- **Language**: TypeScript 5
-- **UI Library**: Ant Design 5
-- **State Management**: Zustand
-- **HTTP Client**: Axios
-
-## 📁 Project Structure
+## 📁 项目结构
 
 ```
 blockchain-cmdb/
-├── backend/                 # Go backend service
-│   ├── api/                # REST API handlers
-│   ├── blockchain/         # Blockchain integration
-│   ├── models/             # Database models
-│   ├── middleware/         # Auth, logging, cors
-│   ├── config/             # Configuration
-│   ├── utils/              # Utilities
-│   └── main.go             # Entry point
-├── frontend/               # React frontend
+├── backend/           # Go 后端服务
+│   ├── api/          # RESTful API 路由
+│   ├── blockchain/   # 区块链交互层
+│   ├── models/       # 数据模型
+│   ├── tests/        # 单元测试
+│   └── config/       # 配置文件
+├── frontend/         # React 前端
 │   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── services/       # API services
-│   │   ├── utils/          # Utilities
-│   │   └── types/          # TypeScript types
-│   └── package.json
-├── docs/                   # Documentation
-├── docker/                 # Docker configurations
-├── scripts/                # Deployment scripts
-└── CHANGELOG.md            # Change log
+│   │   ├── components/  # UI组件
+│   │   ├── pages/       # 页面
+│   │   ├── utils/       # 工具函数
+│   │   └── styles/      # 样式
+│   ├── public/       # 静态资源
+│   └── tests/        # 测试文件
+├── docker/           # Docker配置
+├── scripts/          # 部署脚本
+├── docs/             # 文档
+├── CHANGELOG.md      # 变更日志
+└── README.md         # 项目说明
 ```
 
-## 🛠️ Development
+## 🛠️ 开发
 
-### Prerequisites
-- Go 1.21+
-- Node.js 18+
-- PostgreSQL 15+
-- Redis 7+
-- Docker (optional)
-
-### Quick Start
-
+### 后端启动
 ```bash
-# Backend
 cd backend
-go mod init github.com/sunjingwen21/blockchain-cmdb
-go get -u github.com/gin-gonic/gin
-go get -u gorm.io/gorm
-go get -u gorm.io/driver/postgresql
-go run main.go
-
-# Frontend
-cd frontend
-npm install
-npm start
+go mod init blockchain-cmdb
+go get -u github.com/gin-gonic/gin gorm.io/gorm gorm.io/driver/postgres
 ```
 
-## 📝 License
+### 前端启动
+```bash
+cd frontend
+npx create-react-app . --template typescript
+npm install antd ethers
+```
+
+### Docker 启动
+```bash
+docker-compose up -d
+```
+
+## 📜 许可证
 
 MIT License

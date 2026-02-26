@@ -5,55 +5,53 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"github.com/sunjingwen21/blockchain-cmdb/backend/api"
+	"github.com/sunjingwen21/blockchain-cmdb/backend/config"
 )
 
 func main() {
-	// Load environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found")
-	}
+	// Load configuration
+	cfg := config.Load()
 
 	// Set Gin mode
-	ginMode := os.Getenv("GIN_MODE")
-	if ginMode == "" {
-		ginMode = gin.DebugMode
-	}
-	gin.SetMode(ginMode)
+	gin.SetMode(cfg.Server.Mode)
 
 	// Initialize router
 	r := gin.Default()
 
+	// Initialize handlers
+	handler := api.NewHandler(cfg)
+	userHandler := api.NewUserHandler()
+	assetHandler := api.NewAssetHandler()
+
 	// Health check endpoint
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"status":    "ok",
-			"version":   "0.1.0",
-			"service":   "blockchain-cmdb-api",
-		})
-	})
+	r.GET("/health", handler.HealthCheck)
 
 	// API v1 routes
 	v1 := r.Group("/api/v1")
 	{
-		// Placeholder routes - to be implemented
-		v1.GET("/assets", func(c *gin.Context) {
-			c.JSON(200, gin.H{"message": "Assets endpoint - coming soon"})
-		})
-		
-		v1.GET("/blockchain/tx", func(c *gin.Context) {
-			c.JSON(200, gin.H{"message": "Blockchain transactions - coming soon"})
-		})
+		// Config routes
+		v1.GET("/config", handler.GetConfig)
+
+		// User routes
+		v1.GET("/users", userHandler.ListUsers)
+		v1.GET("/users/:id", userHandler.GetUser)
+		v1.POST("/users", userHandler.CreateUser)
+		v1.PUT("/users/:id", userHandler.UpdateUser)
+		v1.DELETE("/users/:id", userHandler.DeleteUser)
+
+		// Asset routes
+		v1.GET("/assets", assetHandler.ListAssets)
+		v1.GET("/assets/:id", assetHandler.GetAsset)
+		v1.POST("/assets", assetHandler.CreateAsset)
+		v1.PUT("/assets/:id", assetHandler.UpdateAsset)
+		v1.DELETE("/assets/:id", assetHandler.DeleteAsset)
+		v1.GET("/assets/:id/history", assetHandler.GetAssetHistory)
 	}
 
 	// Start server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-	log.Printf("Server starting on port %s", port)
-	if err := r.Run(":" + port); err != nil {
+	log.Printf("Server starting on port %s in %s mode", cfg.Server.Port, cfg.Server.Mode)
+	if err := r.Run(":" + cfg.Server.Port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
