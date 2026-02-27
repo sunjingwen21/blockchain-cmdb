@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -24,10 +25,31 @@ func (User) TableName() string {
 	return "users"
 }
 
+// HashPassword hashes the user's password
+func (u *User) HashPassword() error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashedPassword)
+	return nil
+}
+
+// CheckPassword checks if the provided password matches the hashed password
+func (u *User) CheckPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil
+}
+
 // BeforeCreate hook is called before creating a new user
 func (u *User) BeforeCreate(tx *gorm.DB) error {
 	if u.Role == "" {
 		u.Role = "user"
+	}
+	if u.Password != "" {
+		if err := u.HashPassword(); err != nil {
+			return err
+		}
 	}
 	return nil
 }

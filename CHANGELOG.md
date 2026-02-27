@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (Day 2 - 2026-02-27)
+- ✅ PostgreSQL database integration with GORM
+  - Database connection management
+  - Auto-migration for User, Asset, AssetHistory models
+  - Connection pooling and graceful shutdown
+- ✅ JWT authentication system
+  - User login with email/password
+  - User registration with role assignment
+  - JWT token generation and validation
+  - Password change functionality
+  - Protected route middleware
+  - Role-based access control (admin/user)
+- ✅ Blockchain connection module (Ethereum)
+  - Ethereum client initialization
+  - Chain ID detection
+  - Balance checking
+  - Transaction status tracking
+  - Asset registration placeholder (smart contract ready)
+  - Key pair generation
+- ✅ Authentication API endpoints
+  - POST /api/v1/auth/login
+  - POST /api/v1/auth/register
+  - GET /api/v1/auth/me (protected)
+  - POST /api/v1/auth/change-password (protected)
+- ✅ Enhanced main.go with all integrations
+  - Database initialization
+  - Blockchain client setup
+  - JWT middleware integration
+  - Protected route groups
+
+### Planned (Day 3)
+- [ ] Frontend Ant Design integration
+- [ ] Login page UI
+- [ ] Asset dashboard page
+- [ ] Asset CRUD with database persistence
+- [ ] Docker Compose setup with PostgreSQL
+- [ ] Environment configuration template
+
 ### Added (Day 1 - 2026-02-26)
 - ✅ Backend API foundation with Go + Gin framework
   - RESTful API structure with versioning (/api/v1)
@@ -26,14 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Model validation tests
   - Config loading tests
 - ✅ Git repository setup with SSH key authentication
-
-### Planned (Day 2)
-- [ ] PostgreSQL database integration (GORM)
-- [ ] JWT authentication middleware
-- [ ] Blockchain connection module (Ethereum)
-- [ ] Frontend UI components (Ant Design)
-- [ ] Asset dashboard page
-- [ ] Docker Compose setup
 
 ### Planned (Future)
 - [ ] Blockchain asset registration/on-chain storage
